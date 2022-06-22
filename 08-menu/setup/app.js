@@ -94,8 +94,17 @@ function displayMenuItems(menuItems) {
 }
 
 const sectionCenter = document.querySelector('.section-center')
+const filterBtns = document.querySelectorAll('.filter-btn')
 
 window.addEventListener('DOMContentLoaded', () => {
   displayMenuItems(menu)
 })
 
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const category = event.currentTarget.dataset.id
+
+    category === 'all' ? displayMenuItems(menu) :
+                        displayMenuItems(menu.filter(item => item.category === `${category}` ))
+  })
+})
