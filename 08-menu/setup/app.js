@@ -71,8 +71,19 @@ const menu = [
     img: "./images/item-9.jpeg",
     desc: `skateboard fam synth authentic semiotics. Live-edge lyft af, edison bulb yuccie crucifix microdosing.`,
   },
+  {
+    id: 10,
+    title: "steak dinner",
+    category: "dinner",
+    price: 36.99,
+    img: "./images/item-10.jpeg",
+    desc: `skateboard fam synth authentic semiotics. Live-edge lyft af, edison bulb yuccie crucifix microdosing.`,
+  }
 ];
 
+
+
+// Function that allows us to display our current menu items to the DOM
 function displayMenuItems(menuItems) {
   let displayMenu = menuItems.map(item => {
 
@@ -93,17 +104,66 @@ function displayMenuItems(menuItems) {
   sectionCenter.innerHTML = displayMenu
 }
 
+// Function that allows us to filter menu categories and be left with only the unique ones
+function getUniqueCategories(menuItems) {
+  let uniqueItems = ['all']
+  menuItems.forEach(item => uniqueItems.push(item.category))
+  // Use set to ensure that the values are unique
+  return [...new Set(uniqueItems)]
+}
+
+// Function that allows us display only unique property buttons
+function displayProperty(menuCategories) {
+  // Where we will place our elements
+  const sectionMenu = document.querySelector('.menu')
+
+  // Make sure the properties are unique
+  const properties = getUniqueCategories(menuCategories)
+
+  // Creating the button container
+  let btnContainer = document.createElement('div')
+  btnContainer.className = 'btn-container'
+
+
+  // Loop through each unique property
+  properties.forEach(category => {
+    // Create a button with the class name "filter-btn" and custom attribute data-id equal to the unique category
+    let btn = document.createElement('button')
+    btn.className = 'filter-btn'
+    btn.setAttribute('data-id', category)
+    btn.textContent = category
+    // Place each button inside of our existing btn-container div (that we have created above)
+    btnContainer.appendChild(btn)
+  })
+
+  // Placing our btn-container (with each property button nested inside) 
+  // => append that to the HTML section dedicated to displaying our menu items
+  sectionMenu.insertBefore(btnContainer, sectionMenu.children[1])
+}
+
+
+
+
+// Once the page has loaded 
+// Run the functions that will allow us to display our menu items and unique pro 
+window.addEventListener('DOMContentLoaded', () => {
+  displayMenuItems(menu)
+
+
+})
+
+displayProperty(menu)
+
+// Getting elements out of our HTML
 const sectionCenter = document.querySelector('.section-center')
 const filterBtns = document.querySelectorAll('.filter-btn')
 
-window.addEventListener('DOMContentLoaded', () => {
-  displayMenuItems(menu)
-})
 
+// filter button functionality
 filterBtns.forEach(btn => {
   btn.addEventListener('click', () => {
     const category = event.currentTarget.dataset.id
-
+    console.log('clicking buttons')
     category === 'all' ? displayMenuItems(menu) :
                         displayMenuItems(menu.filter(item => item.category === `${category}` ))
   })
